@@ -7,7 +7,7 @@ import pytest
 from quantforge.core.exceptions import DataIngestionError
 from quantforge.data.ingestion import DataIngester, data_ingester
 
-
+#helps reuse data in multiple test cases
 @pytest.fixture
 def sample_ohlcv_df() -> pd.DataFrame:
     """Fixture returning a standard pandas DataFrame in yfinance history format."""
@@ -24,7 +24,7 @@ def sample_ohlcv_df() -> pd.DataFrame:
     }
     return pd.DataFrame(data, index=timestamps)
 
-
+#converts sync to asyn since api is asynch
 @pytest.mark.asyncio
 async def test_fetch_historical_success(sample_ohlcv_df: pd.DataFrame) -> None:
     """Tests a successful data ingestion flow, mapping dataframe rows to OHLCVBar models."""
@@ -90,7 +90,7 @@ async def test_fetch_historical_network_error() -> None:
 
         assert exc_info.value.ticker == "AAPL"
         assert exc_info.value.source == "yfinance"
-        assert "yfinance request failed" in str(exc_info.value)
+        assert "yfinance request failed" in str(exc_info.value) #yfin server down.
 
 
 @pytest.mark.asyncio
@@ -142,5 +142,6 @@ async def test_fetch_historical_validation_failure() -> None:
 
 
 def test_singleton_export() -> None:
-    """Verifies that data_ingester singleton instance is exported correctly."""
+    """Verifies that data_ingester singleton instance is exported correctly,for consistency instead of 
+    calling the class we are calling the object."""
     assert isinstance(data_ingester, DataIngester)
