@@ -9,6 +9,7 @@ from quantforge.data.models import (
     Position,
     Trade,
 )
+from quantforge.data.ingestion import DataIngester, data_ingester
 
 __all__ = [
     "OHLCVBar",
@@ -16,4 +17,6 @@ __all__ = [
     "Position",
     "EquityCurvePoint",
     "Portfolio",
+    "DataIngester",
+    "data_ingester",
 ]

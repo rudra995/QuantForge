@@ -58,9 +58,58 @@ tests/test_scaffold.py ......                                            [100%]
 
 ---
 
+## Phase 2: Data Ingestion Layer
+
+We implemented a production-grade, asynchronous data ingestion module utilizing the `yfinance` market data provider.
+
+### Key Implementation Details:
+1. **[ingestion.py](file:///Users/janhavi/Desktop/QuantForge/quantforge/data/ingestion.py)**:
+   - Configured `DataIngester` class with async method `fetch_historical`.
+   - Utilizes `asyncio.to_thread` for concurrent execution of the synchronous `yfinance` ticker fetching.
+   - Maps DataFrame outputs row-by-row to strongly-typed `OHLCVBar` domain models.
+   - Restricts data leaking by checking column completeness and verifying boundaries.
+   - Formulates logging for fetch status, row counts, and structural parsing.
+   - Registers and exports the globally accessible `data_ingester` singleton in [__init__.py](file:///Users/janhavi/Desktop/QuantForge/quantforge/data/__init__.py).
+2. **Testing Dependencies**:
+   - Added `pytest-asyncio` support into [pyproject.toml](file:///Users/janhavi/Desktop/QuantForge/pyproject.toml) to support running asynchronous pytest operations.
+
+---
+
+## Validation & Testing Results
+
+We executed the entire QuantForge unit test suite containing both core platform and data ingestion layer validations:
+```bash
+.venv/bin/pytest tests/
+```
+
+### Execution Output:
+```text
+============================= test session starts ==============================
+platform darwin -- Python 3.13.0, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Users/janhavi/Desktop/QuantForge
+configfile: pyproject.toml
+plugins: asyncio-1.4.0
+collected 12 items
+
+tests/test_ingestion.py ......                                           [ 50%]
+tests/test_scaffold.py ......                                            [100%]
+
+============================= 12 passed in 0.44s ===============================
+```
+
+### Verified Ingestion Test Cases (`test_ingestion.py`):
+- **`test_fetch_historical_success`**: Verifies a complete successful data ingestion flow, asserting correct type matching and thread isolation.
+- **`test_fetch_historical_empty_response`**: Verifies that returning an empty dataframe raises a `DataIngestionError`.
+- **`test_fetch_historical_network_error`**: Verifies network failures or timeouts are caught and converted to a standard `DataIngestionError`.
+- **`test_fetch_historical_missing_columns`**: Verifies missing column data yields a `DataIngestionError`.
+- **`test_fetch_historical_validation_failure`**: Verifies invalid price bounds from API trigger a `DataIngestionError`.
+
+---
+
 ## Version Control & Repository Setup
 
-We have initialized and prepared the repository for version tracking:
+We have prepared the repository for version tracking:
 1. **[.gitignore](file:///Users/janhavi/Desktop/QuantForge/.gitignore)**: Comprehensive Python rules to filter untracked artifacts (`.venv/`, compiled pycache, local `.env` values, and packaging artifacts).
-2. **Staged and Committed**: Created a clean root commit in the local `main` branch containing all newly scaffolded and verified project files.
+2. **Staged and Committed**: Created a clean root commit and follow-up tracking commits in the local `main` branch containing all project scaffolding, test suites, and ingestion layers.
+
 
