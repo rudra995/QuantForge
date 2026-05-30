@@ -13,6 +13,7 @@ from quantforge.backtester.events import (
     OrderType,
     SignalEvent,
 )
+from quantforge.backtester.portfolio import PortfolioManager
 
 __all__ = [
     "MarketEvent",
@@ -22,4 +23,5 @@ __all__ = [
     "OrderType",
     "BacktestEvent",
     "EventQueue",
+    "PortfolioManager",
 ]
