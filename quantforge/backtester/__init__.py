@@ -1,9 +1,11 @@
 """Backtester module for QuantForge trading platform.
 
 This package houses the components for the event-driven backtesting engine,
-including the event queue, execution models, and portfolio managers.
+including the event queue, execution models, portfolio managers, and the main
+BacktestEngine.
 """
 
+from quantforge.backtester.engine import BacktestConfig, BacktestEngine, BacktestResult
 from quantforge.backtester.events import (
     BacktestEvent,
     EventQueue,
@@ -26,6 +28,11 @@ from quantforge.backtester.execution import (
 )
 
 __all__ = [
+    # Engine
+    "BacktestConfig",
+    "BacktestResult",
+    "BacktestEngine",
+    # Events
     "MarketEvent",
     "SignalEvent",
     "OrderEvent",
@@ -33,7 +40,9 @@ __all__ = [
     "OrderType",
     "BacktestEvent",
     "EventQueue",
+    # Portfolio
     "PortfolioManager",
+    # Execution
     "SlippageModel",
     "FixedSlippageModel",
     "PercentageSlippageModel",
