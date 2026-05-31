@@ -14,6 +14,16 @@ from quantforge.backtester.events import (
     SignalEvent,
 )
 from quantforge.backtester.portfolio import PortfolioManager
+from quantforge.backtester.execution import (
+    SlippageModel,
+    FixedSlippageModel,
+    PercentageSlippageModel,
+    CommissionModel,
+    FixedCommissionModel,
+    PercentageCommissionModel,
+    ExecutionHandler,
+    create_default_execution_handler,
+)
 
 __all__ = [
     "MarketEvent",
@@ -24,4 +34,12 @@ __all__ = [
     "BacktestEvent",
     "EventQueue",
     "PortfolioManager",
+    "SlippageModel",
+    "FixedSlippageModel",
+    "PercentageSlippageModel",
+    "CommissionModel",
+    "FixedCommissionModel",
+    "PercentageCommissionModel",
+    "ExecutionHandler",
+    "create_default_execution_handler",
 ]
